@@ -45,15 +45,30 @@ function initializeServiceWorker() {
   // We first must register our ServiceWorker here before any of the code in
   // sw.js is executed.
   // B1. TODO - Check if 'serviceWorker' is supported in the current browser
-  // B2. TODO - Listen for the 'load' event on the window object.
-  // Steps B3-B6 will be *inside* the event listener's function created in B2
-  // B3. TODO - Register '/sw.js' as a service worker (The MDN article
-  //            "Using Service Workers" will help you here)
-  // B4. TODO - Once the service worker has been successfully registered, console
-  //            log that it was successful.
-  // B5. TODO - In the event that the service worker registration fails, console
-  //            log that it has failed.
+  if ('serviceWorker' in navigator) {
+    try {
+      // B2. TODO - Listen for the 'load' event on the window object.
+      window.addEventListener('load', async () =>  {
+        // Steps B3-B6 will be *inside* the event listener's function created in B2
+        // B3. TODO - Register './sw.js' as a service worker (The MDN article
+        //            "Using Service Workers" will help you here)
+        const registration = await navigator.serviceWorker.register('./sw.js',);
+        // B4. TODO - Once the service worker has been successfully registered, console
+        //            log that it was successful.
+        if (registration.active) {
+          console.log("Service worker successfully active");
+        }
+
+        
+      });
+    } catch (error) {
+      // B5. TODO - In the event that the service worker registration fails, console
+      //            log that it has failed.
+      console.error(`Rgistration failed with ${error}`);
+    }
+  }
   // STEPS B6 ONWARDS WILL BE IN /sw.js
+  
 }
 
 /**
@@ -69,6 +84,7 @@ async function getRecipes() {
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
   const recipes = localStorage.getItem('recipes');
+  // const recipes = localStorage.recipes; // this works as well
   /**************************/
   // The rest of this method will be concerned with requesting the recipes
   // from the network
@@ -88,6 +104,7 @@ async function getRecipes() {
   /**************************/
   // A4. TODO - Loop through each recipe in the RECIPE_URLS array constant
   //            declared above
+  RECIPE_URLS.forEach(async url => {
   // A5. TODO - Since we are going to be dealing with asynchronous code, create
   //            a try / catch block. A6-A9 will be in the try portion, A10-A11
   //            will be in the catch portion.
@@ -96,19 +113,32 @@ async function getRecipes() {
   //            article on fetch(). NOTE: Fetches are ASYNCHRONOUS, meaning that
   //            you must either use "await fetch(...)" or "fetch.then(...)". This
   //            function is using the async keyword so we recommend "await"
+    const fetchResponse = await fetch(url);
   // A7. TODO - For each fetch response, retrieve the JSON from it using .json().
   //            NOTE: .json() is ALSO asynchronous, so you will need to use
   //            "await" again
+    const newRecipe = JSON.stringify(await fetchResponse.json());
   // A8. TODO - Add the new recipe to the recipes array
+    recipeArray.push(newRecipe);
   // A9. TODO - Check to see if you have finished retrieving all of the recipes,
-  //            if you have, then save the recipes to storage using the function
-  //            we have provided. Then, pass the recipes array to the Promise's
-  //            resolve() method.
+  //            if you have, 
+    if( RECIPE_URLS.length==recipeArray.length ) { 
+    
+  //            then save the recipes to storage using the function
+  //            we have provided. 
+      saveRecipesToStorage(recipeArray);
+      resolve(recipeArray);
+
+  //            Then, pass the recipes array to the Promise's
+  //            resolve() method.  
+    }  
   } catch (err) {
   // A10. TODO - Log any errors from catch using console.error
-  console.error(err);
+    console.error(err);
   // A11. TODO - Pass any errors to the Promise's reject() function
+    reject(err);
   }
+});
 });
 }
 
