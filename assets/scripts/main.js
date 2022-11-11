@@ -56,10 +56,8 @@ function initializeServiceWorker() {
         // B4. TODO - Once the service worker has been successfully registered, console
         //            log that it was successful.
         if (registration.active) {
-          console.log("Service worker successfully active");
+          console.log("Service worker successfully registered");
         }
-
-        
       });
     } catch (error) {
       // B5. TODO - In the event that the service worker registration fails, console
