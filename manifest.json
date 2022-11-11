@@ -1,0 +1,16 @@
+{
+    "name": "ThanksRecipes",
+    "short_name": "Recipes",
+    "start_url" : "/index.html",
+    "display" : "standalone",
+    "background_color": "#FFE9D2",
+    "theme_color": "#FFE1C4",
+    "orinetation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/assets/images/icons/1-star.svg",
+            "type": "image/svg",
+            "size" : "72x72"
+        }
+    ]
+}
