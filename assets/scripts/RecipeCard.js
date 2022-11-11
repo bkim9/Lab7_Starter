@@ -119,7 +119,6 @@ class RecipeCard extends HTMLElement {
   set data(data) {
     // If nothing was passed in, return
     if (!data) return;
-
     // Select the <article> we added to the Shadow DOM in the constructor
     const article = this.shadowRoot.querySelector('article');
 
@@ -133,7 +132,7 @@ class RecipeCard extends HTMLElement {
       <p class="organization">${data.organization}</p>
       <div class="rating">
         <span>${data.rating}</span>
-        <img src="/assets/images/icons/${data.rating}-star.svg" alt="${data.rating} stars">
+        <img src="./assets/images/icons/${data.rating}-star.svg" alt="${data.rating} stars">
         <span>(${data.numRatings})</span>
       </div>
       <time>${data.lengthTime}</time>

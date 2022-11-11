@@ -52,7 +52,7 @@ function initializeServiceWorker() {
         // Steps B3-B6 will be *inside* the event listener's function created in B2
         // B3. TODO - Register './sw.js' as a service worker (The MDN article
         //            "Using Service Workers" will help you here)
-        const registration = await navigator.serviceWorker.register('./sw.js',);
+        const registration = await navigator.serviceWorker.register('./sw.js');
         // B4. TODO - Once the service worker has been successfully registered, console
         //            log that it was successful.
         if (registration.active) {
@@ -95,9 +95,7 @@ async function getRecipes() {
   //            function (we call these callback functions). That function will
   //            take two parameters - resolve, and reject. These are functions
   //            you can call to either resolve the Promise or Reject it.
-  const promise1 = new Promise ((resolve, reject) => {
-
-
+  return new Promise ((resolve, reject) => {
   /**************************/
   // A4-A11 will all be *inside* the callback function we passed to the Promise
   // we're returning
@@ -117,20 +115,19 @@ async function getRecipes() {
   // A7. TODO - For each fetch response, retrieve the JSON from it using .json().
   //            NOTE: .json() is ALSO asynchronous, so you will need to use
   //            "await" again
-    const newRecipe = JSON.stringify(await fetchResponse.json());
+    const newRecipe = await fetchResponse.json();
   // A8. TODO - Add the new recipe to the recipes array
     recipeArray.push(newRecipe);
   // A9. TODO - Check to see if you have finished retrieving all of the recipes,
   //            if you have, 
     if( RECIPE_URLS.length==recipeArray.length ) { 
-    
   //            then save the recipes to storage using the function
   //            we have provided. 
       saveRecipesToStorage(recipeArray);
       resolve(recipeArray);
-
   //            Then, pass the recipes array to the Promise's
   //            resolve() method.  
+
     }  
   } catch (err) {
   // A10. TODO - Log any errors from catch using console.error
